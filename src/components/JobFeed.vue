@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { JobListing, PositionFunction } from '@/models/models'
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 export interface Props {
   jobListings: JobListing[]
@@ -11,23 +11,34 @@ const props = withDefaults(defineProps<Props>(), {
   positionFunctions: () => []
 });
 
-const filter = ref('');
+const showBtn = ref(false);
+
+function toggleBtn() {
+  showBtn.value = !showBtn.value
+}
+
+const setBtnClasses = computed(function () {
+  return showBtn.value ? 'filter-list' : 'visually-hidden'
+})
 
 const filterFunc = computed(function () {
-  return props.jobListings.filter(item => item.job?.position_function?.name_nb?.includes(filter.value))
+  return props.jobListings.filter(item => item.job?.position_function?.name_nb?.includes(''))
 })
+
 
 </script>
 
 
 <template>
   <div class="container">
-    <div>
-      <label v-for="position in positionFunctions" :key="position.id">
-        <input type="checkbox" :name="position.name_nb"
-          :value="position.name_nb">
+    <div class="filter">
+      <button class="filter-button" @click="toggleBtn">Filter by position</button>
+      <div :class="setBtnClasses">
+        <label v-for="position in positionFunctions" :key="position.id">
+          <input type="checkbox" :name="position.name_nb" :value="position.name_nb">
           {{ position.name_nb }}
-      </label>
+        </label>
+      </div>
     </div>
     <ul class="job-feed">
       <li class="job-item" v-for="{ job } in filterFunc" :key="job?.id">
@@ -47,8 +58,40 @@ const filterFunc = computed(function () {
   padding: 20px 60px;
 }
 
+.filter {
+  position: relative;
+
+}
+
+.filter-button {
+  display: block;
+  height: 60px;
+  width: 200px;
+  font-size: 20px;
+  margin-bottom: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-list {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  height: 400px;
+  overflow-y: scroll;
+  font-size: 20px;
+  z-index: 2;
+  background-color: white;
+  padding: 15px;
+  border: 1px solid darkgray;
+}
+
 .job-feed {
   list-style: none;
+  z-index: 1;
 }
 
 .job-item {
@@ -102,5 +145,19 @@ const filterFunc = computed(function () {
   gap: 10px;
   align-items: center;
   font-size: 20px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
 }
 </style>
