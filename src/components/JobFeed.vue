@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { JobListing, PositionFunction } from '@/models/models'
-import { computed } from 'vue'
 
 export interface Props {
   jobListings: JobListing[]
@@ -9,14 +8,7 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   jobListings: () => [],
   positionFunctions: () => []
-})
-
-console.log(props.jobListings);
-// const titles = computed(() => (props.jobListings.map(res => res.job)));
-// console.log(titles);
-
-
-
+});
 </script>
 
 <template>
@@ -25,16 +17,11 @@ console.log(props.jobListings);
       <li class="job-item" v-for="{ job } in props.jobListings" :key="job?.id">
         <p class="job-title">{{ job?.title }}</p>
         <p class="job-description">{{ job?.unit?.name }}</p>
-        <p class="job-description">{{ job?.position_function?.name_nb }}</p>
-        <p class="job-description">{{ job?.due_date }}</p>
+        <p class="job-description">{{ job?.position_function?.name_nb }} </p>
+        <p class="job-description">{{ job && job.due_date && new Date(job.due_date).toDateString() }}</p>
       </li>
     </ul>
   </div>
-  <!-- <ul>
-      <li v-for="item in props.jobListings" :key={{ item.job.key }}>
-        {{ item }}
-      </li>
-    </ul> -->
 </template>
 
 <style>
@@ -58,14 +45,12 @@ console.log(props.jobListings);
 
 .job-title {
   display: block;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 600;
   margin-bottom: 10px;
-  color: black;
 }
 
 .job-description {
-  color: darkgrey;
   font-size: 20px;
   display: inline-block;
 }
