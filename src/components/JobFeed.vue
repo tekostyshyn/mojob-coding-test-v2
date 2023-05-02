@@ -37,6 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
 }
 
 .job-item {
+  position: relative;
   display: block;
   text-align: left;
   border-radius: 10px;
@@ -44,6 +45,20 @@ const props = withDefaults(defineProps<Props>(), {
   ;
   margin-bottom: 20px;
   padding: 20px;
+  padding-left: 60px;
+}
+
+.job-item::before {
+  position: absolute;
+  display: inline-block;
+  content: "";
+  background-color: lightgrey;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  top: 50%;
+  left: 1%;
+  transform: translateY(-50%);
 }
 
 .job-title {
