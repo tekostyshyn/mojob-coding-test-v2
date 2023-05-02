@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { JobListing, PositionFunction } from '@/models/models'
+import { computed, ref } from 'vue';
 
 export interface Props {
   jobListings: JobListing[]
@@ -9,18 +10,32 @@ const props = withDefaults(defineProps<Props>(), {
   jobListings: () => [],
   positionFunctions: () => []
 });
+
+const filter = ref('');
+
+const filterFunc = computed(function () {
+  return props.jobListings.filter(item => item.job?.position_function?.name_nb?.includes(filter.value))
+})
+
 </script>
+
 
 <template>
   <div class="container">
+    <div>
+      <label v-for="position in positionFunctions" :key="position.id">
+        <input type="checkbox" :name="position.name_nb"
+          :value="position.name_nb">
+          {{ position.name_nb }}
+      </label>
+    </div>
     <ul class="job-feed">
-      <li class="job-item" v-for="{ job } in props.jobListings" :key="job?.id">
+      <li class="job-item" v-for="{ job } in filterFunc" :key="job?.id">
         <p class="job-title">{{ job?.title }}</p>
         <div class="job-description-wrapper">
           <p class="job-description">{{ job?.unit?.name }}</p>
           <p class="job-description dot">{{ job?.position_function?.name_nb }} </p>
           <p class="job-description dot">{{ job && job.due_date && new Date(job.due_date).toDateString() }}</p>
-
         </div>
       </li>
     </ul>

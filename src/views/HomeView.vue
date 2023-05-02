@@ -14,7 +14,6 @@ onMounted(async () => {
   mojobApi.value = new BaseApi('https://test-api.mojob.io/public/', axiosInstance)
   try {
     const jobListingsResponsePage: IPage<JobListing> = await mojobApi.value.getJobListings();
-    console.log(jobListingsResponsePage);
     if (jobListingsResponsePage.results) {
       jobListingFilters.value = jobListingsResponsePage.results;
     } else {
@@ -26,7 +25,7 @@ onMounted(async () => {
     if (jobLocationFiltersResponsePage.results) {
       positionFunctionFilters.value = jobLocationFiltersResponsePage.results
       // console.log(JSON.stringify(positionFunctionFilters.value, null, 2))
-      // console.log(positionFunctionFilters.value)
+      console.log(positionFunctionFilters.value)
     } else {
       console.log('Failed loading position function filters')
     }
