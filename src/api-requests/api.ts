@@ -1,5 +1,5 @@
 import type { AxiosStatic } from 'axios'
-import type { IPage, PositionFunction } from '@/models/models'
+import type { IPage, JobListing, PositionFunction } from '@/models/models'
 
 export default class BaseApi {
   public axios!: AxiosStatic
@@ -13,6 +13,11 @@ export default class BaseApi {
   public getPositionFunctions = (): Promise<IPage<PositionFunction>> =>
     this.axios
       .get(`${this.baseUrl}job/position-functions/?page_size=100`)
+      .then((response) => response.data)
+
+  public getJobListings = (): Promise<IPage<JobListing>> =>
+    this.axios
+      .get(`${this.baseUrl}job/listings/?include_open=False&page=1&page_size=5&use_pagination=True`)
       .then((response) => response.data)
 
   /**

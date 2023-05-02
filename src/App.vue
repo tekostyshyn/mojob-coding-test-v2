@@ -20,14 +20,31 @@ import { RouterLink, RouterView } from 'vue-router'
   text-align: center;
   color: #2c3e50;
 }
+
 #nav {
   padding: 30px;
 }
+
 #nav a {
   font-weight: bold;
   color: #4f4f4f;
 }
+
 #nav a.router-link-exact-active {
   color: #46bbb3;
 }
 </style>
+
+<style>
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}</style>

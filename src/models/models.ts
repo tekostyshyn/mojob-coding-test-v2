@@ -5,6 +5,7 @@
  *
  * https://test-api.mojob.io/public/job/listings/?include_open=False&page=1&page_size=25&use_pagination=True
  *
+ * 
  * const exampleJobListingServerResponse: IPage<JobListing> = {
   "count": 1,
   "results": [
@@ -108,6 +109,7 @@
     ]
   }
  */
+
 export interface IPage<T> {
   // count: Contains the total count of all objects T in all pages
   count?: number
