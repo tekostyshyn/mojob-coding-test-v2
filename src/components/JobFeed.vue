@@ -147,12 +147,13 @@ const setPagesButtonText = computed(function () {
 .filter-button {
   display: block;
   height: 60px;
-  width: 200px;
-  font-size: 20px;
+  width: 240px;
+  font-size: 18px;
   margin-bottom: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border: none;
   cursor: pointer;
+  text-transform: uppercase;
 }
 
 
