@@ -65,30 +65,32 @@ const setPagesButtonText = computed(function () {
 
 <template>
   <div class="container">
-    <div class="filter">
-      <button class="filter-button" @click="toggleBtn">Filter by position</button>
-      <div :class="setBtnClasses">
-        <label v-for="position in positionFunctions" :key="position.id">
-          <input type="checkbox" :name="position.name_nb" :value="position.name_nb" v-model="checkedPositions">
-          {{ position.name_nb }}
-        </label>
+    <div class="wrapper">
+      <div class="filter">
+        <button class="filter-button" @click="toggleBtn">Filter by position</button>
+        <div :class="setBtnClasses">
+          <label v-for="position in positionFunctions" :key="position.id">
+            <input type="checkbox" :name="position.name_nb" :value="position.name_nb" v-model="checkedPositions">
+            {{ position.name_nb }}
+          </label>
+        </div>
       </div>
-    </div>
-    <div class="pages">
-      <button class="filter-button" @click="togglePagesBtn">{{ setPagesButtonText }}</button>
-      <div :class="setPagesBtnClasses">
-        <label>
-          <input type="radio" value="5" v-model="jobsPerPage">
-          5 per page
-        </label>
-        <label>
-          <input type="radio" value="25" v-model="jobsPerPage">
-          25 per page
-        </label>
-        <label>
-          <input type="radio" value="200" v-model="jobsPerPage">
-          Display all
-        </label>
+      <div class="pages">
+        <button class="filter-button" @click="togglePagesBtn">{{ setPagesButtonText }}</button>
+        <div :class="setPagesBtnClasses">
+          <label>
+            <input type="radio" value="5" v-model="jobsPerPage">
+            5 per page
+          </label>
+          <label>
+            <input type="radio" value="25" v-model="jobsPerPage">
+            25 per page
+          </label>
+          <label>
+            <input type="radio" value="200" v-model="jobsPerPage">
+            Display all
+          </label>
+        </div>
       </div>
     </div>
     <ul class="job-feed">
@@ -107,6 +109,11 @@ const setPagesButtonText = computed(function () {
 <style>
 .container {
   padding: 20px 60px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
 }
 
 .filter {
