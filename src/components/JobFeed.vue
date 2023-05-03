@@ -12,9 +12,14 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const showBtn = ref(false);
+const pagesBtnRef = ref('5 per page');
+const checkedPositions = ref([]);
 
 function toggleBtn() {
   showBtn.value = !showBtn.value
+}
+
+function handlePagesBtn() {
 }
 
 const setBtnClasses = computed(function () {
@@ -22,9 +27,15 @@ const setBtnClasses = computed(function () {
 })
 
 const filterFunc = computed(function () {
-  return props.jobListings.filter(item => item.job?.position_function?.name_nb?.includes(''))
+  if (checkedPositions.value.length === 0) {
+    return props.jobListings;
+  }
+  
+  return props.jobListings.filter(item => {
+    const index = checkedPositions.value.findIndex(position => position === item.job?.position_function?.name_nb)
+    return index >= 0 ? true : false;
+  })
 })
-
 
 </script>
 
@@ -35,10 +46,13 @@ const filterFunc = computed(function () {
       <button class="filter-button" @click="toggleBtn">Filter by position</button>
       <div :class="setBtnClasses">
         <label v-for="position in positionFunctions" :key="position.id">
-          <input type="checkbox" :name="position.name_nb" :value="position.name_nb">
+          <input type="checkbox" :name="position.name_nb" :value="position.name_nb" v-model="checkedPositions">
           {{ position.name_nb }}
         </label>
       </div>
+    </div>
+    <div class="pages">
+      <button class="filter-button" @click="handlePagesBtn">{{ pagesBtnRef }}</button>
     </div>
     <ul class="job-feed">
       <li class="job-item" v-for="{ job } in filterFunc" :key="job?.id">
@@ -99,11 +113,12 @@ const filterFunc = computed(function () {
   display: block;
   text-align: left;
   border-radius: 10px;
+  max-width: 1000px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   ;
   margin-bottom: 20px;
   padding: 20px;
-  padding-left: 60px;
+  padding-left: 70px;
 }
 
 .job-item::before {
@@ -115,7 +130,7 @@ const filterFunc = computed(function () {
   height: 40px;
   border-radius: 50%;
   top: 50%;
-  left: 1%;
+  left: 15px;
   transform: translateY(-50%);
 }
 
