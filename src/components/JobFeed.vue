@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { JobListing, PositionFunction } from '@/models/models'
-import { computed, ref } from 'vue';
+import { computed, ref, provide, inject, watch } from 'vue';
 
 export interface Props {
   jobListings: JobListing[]
@@ -11,9 +11,18 @@ const props = withDefaults(defineProps<Props>(), {
   positionFunctions: () => []
 });
 
+const emit = defineEmits<{
+  (e: 'handleAmount', value: string): void
+}>()
+
 const showBtn = ref<boolean>(false);
 const pagesBtnRef = ref<string>('5 per page');
 const checkedPositions = ref<string[]>([]);
+const jobsPerPage = ref<string>('');
+
+watch(jobsPerPage, () => {
+  emit("handleAmount", jobsPerPage.value);
+})
 
 function toggleBtn() {
   showBtn.value = !showBtn.value
@@ -30,7 +39,7 @@ const filterFunc = computed(function () {
   if (checkedPositions.value.length === 0) {
     return props.jobListings;
   }
-  
+
   return props.jobListings.filter(item => {
     const index = checkedPositions.value.findIndex(position => position === item.job?.position_function?.name_nb)
     return index >= 0 ? true : false;
@@ -53,6 +62,18 @@ const filterFunc = computed(function () {
     </div>
     <div class="pages">
       <button class="filter-button" @click="handlePagesBtn">{{ pagesBtnRef }}</button>
+      <label>
+        <input type="radio" value="5" v-model="jobsPerPage">
+        5 per page
+      </label>
+      <label>
+        <input type="radio" value="25" v-model="jobsPerPage">
+        25 per page
+      </label>
+      <label>
+        <input type="radio" value="200" v-model="jobsPerPage">
+        Display all
+      </label>
     </div>
     <ul class="job-feed">
       <li class="job-item" v-for="{ job } in filterFunc" :key="job?.id">
