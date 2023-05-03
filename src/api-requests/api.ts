@@ -17,7 +17,7 @@ export default class BaseApi {
 
   public getJobListings = (pageSize: number): Promise<IPage<JobListing>> =>
     this.axios
-      .get(`${this.baseUrl}job/listings/?include_open=False&page=1&page_size=${pageSize}&use_pagination=True`)
+      .get(`${this.baseUrl}job/listings/?add_sub_unit_jobs=True&include_open=False&page=1&page_size=${pageSize}&use_pagination=True`)
       .then((response) => response.data)
 
   /**

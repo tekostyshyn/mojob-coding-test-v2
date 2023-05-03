@@ -15,7 +15,7 @@ const emit = defineEmits<{
   (e: 'handleAmount', value: string): void
 }>()
 
-const showBtn = ref<boolean>(false);
+const showFilterBtn = ref<boolean>(false);
 const showPagesBtn = ref<boolean>(false);
 const checkedPositions = ref<string[]>([]);
 const jobsPerPage = ref<string>('');
@@ -25,7 +25,7 @@ watch(jobsPerPage, () => {
 })
 
 function toggleBtn() {
-  showBtn.value = !showBtn.value
+  showFilterBtn.value = !showFilterBtn.value;
 }
 
 function togglePagesBtn() {
@@ -33,7 +33,7 @@ function togglePagesBtn() {
 }
 
 const setBtnClasses = computed(function () {
-  return showBtn.value ? 'filter-list' : 'visually-hidden'
+  return showFilterBtn.value ? 'filter-list' : 'visually-hidden'
 })
 
 const setPagesBtnClasses = computed(function () {
@@ -69,10 +69,19 @@ const setPagesButtonText = computed(function () {
       <div class="filter">
         <button class="filter-button" @click="toggleBtn">Filter by position</button>
         <div :class="setBtnClasses">
-          <label v-for="position in positionFunctions" :key="position.id">
-            <input type="checkbox" :name="position.name_nb" :value="position.name_nb" v-model="checkedPositions">
-            {{ position.name_nb }}
-          </label>
+          <div v-for="position in positionFunctions" :key="position.id" class="filter-box">
+            <label v-if="position.children?.length === 1">
+              <input type="checkbox" :name="position.name_nb" :value="position.name_nb" v-model="checkedPositions">
+              {{ position.name_nb }}
+            </label>
+            <div v-else class="filter-box">
+              <p>{{ position.name_nb }}</p>
+              <label v-for="subposition in position.children" :key="subposition.id" class="filter-box-label">
+              <input type="checkbox" :name="subposition.name_nb" :value="subposition.name_nb" v-model="checkedPositions">
+              {{ subposition.name_nb }}
+            </label>
+            </div>
+          </div>
         </div>
       </div>
       <div class="pages">
@@ -109,6 +118,9 @@ const setPagesButtonText = computed(function () {
 <style>
 .container {
   padding: 20px 60px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .wrapper {
@@ -119,6 +131,17 @@ const setPagesButtonText = computed(function () {
 .filter {
   position: relative;
 
+}
+
+.filter-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.filter-box-label {
+  padding-left: 20px;
 }
 
 .filter-button {
@@ -140,6 +163,7 @@ const setPagesButtonText = computed(function () {
   align-items: flex-start;
   gap: 10px;
   height: 400px;
+  width: 500px;
   overflow-y: scroll;
   font-size: 20px;
   z-index: 2;
@@ -174,7 +198,6 @@ const setPagesButtonText = computed(function () {
   display: block;
   text-align: left;
   border-radius: 10px;
-  max-width: 1000px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   ;
   margin-bottom: 20px;
