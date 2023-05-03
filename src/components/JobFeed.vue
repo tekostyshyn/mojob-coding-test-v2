@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { JobListing, PositionFunction } from '@/models/models'
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 export interface Props {
   jobListings: JobListing[]
@@ -11,9 +11,9 @@ const props = withDefaults(defineProps<Props>(), {
   positionFunctions: () => []
 });
 
-const showBtn = ref(false);
-const pagesBtnRef = ref('5 per page');
-const checkedPositions = ref([]);
+const showBtn = ref<boolean>(false);
+const pagesBtnRef = ref<string>('5 per page');
+const checkedPositions = ref<string[]>([]);
 
 function toggleBtn() {
   showBtn.value = !showBtn.value
